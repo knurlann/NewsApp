@@ -27,11 +27,3 @@ Now access latest 🗞 from Best News Agencies and 📰 from around the 🌎 �
 
 <img src="/assets/ipad_dailyfeed.jpg">
 
-# Contributing
-We would ❤️ for you to contribute to this repo. To do so, please fork the project and submit pull requests. Report bugs or issues by opening issues above. Made with ❤️ in Bengaluru.
-
-# Logo Design
-
-[Deepak M K](https://in.linkedin.com/in/deepak-mk-a5a62518)
-
-[Pratheek Punchathody](https://in.linkedin.com/in/pratheek-punchathody-00452983)

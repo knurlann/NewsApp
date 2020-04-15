@@ -9,12 +9,14 @@
 import UIKit
 import EasyPeasy
 import SwiftyJSON
+import FirebaseAuth
+import Firebase
 
 
-class MessageViewController: UICollectionViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout, StompClientLibDelegate{
-    let myarray = UserDefaults.standard.stringArray(forKey: "userInfo") ?? [String]()
-    var socketClient = StompClientLib()
-    var numberClient = MessageContacts()
+
+class MessageViewController: UICollectionViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout{
+    var userMe = ""
+
     lazy var seperatorLine :UIView = {
         let line  = UIView()
         line.backgroundColor = UIColor(red: 220/255, green: 220/255, blue: 220/255, alpha: 1)
@@ -43,51 +45,25 @@ class MessageViewController: UICollectionViewController, UITextFieldDelegate, UI
         input.delegate = self
         return input
     }()
-    
-    func stompClient(client: StompClientLib!, didReceiveMessageWithJSONBody jsonBody: AnyObject?, withHeader header: [String : String]?, withDestination destination: String) {
-        var json = JSON(jsonBody!)
-        let jsonText = json["text"].stringValue
-        let jsonSource = json["source"].stringValue
-        let myMessages = Message()
-        myMessages.fromId = jsonSource
-        myMessages.text = jsonText
-        myMessages.timestamp = 1
-        myMessages.toId = myarray[0]
-//        Goods.Messages.append(myMessages)
-        Goods.Messages.insert(myMessages, at: 0)
-//        DispatchQueue.main.async(execute: {
-//            self.scrollToBottom()
-//        })
-        collectionView?.reloadData()
-    }
 
-    
-    func stompClientJSONBody(client: StompClientLib!, didReceiveMessageWithJSONBody jsonBody: String?, withHeader header: [String : String]?, withDestination destination: String) {
-    }
-    
-    func stompClientDidDisconnect(client: StompClientLib!) {
-        print("Socket is Disconnected")
-    }
-    
-    func stompClientDidConnect(client: StompClientLib!) {
-        print("Socket is connected")
-        print(socketClient.isConnected())
-        socketClient.subscribe(destination: "/topic/\(myarray[0])")
-    }
-    
-    
-    func serverDidSendReceipt(client: StompClientLib!, withReceiptId receiptId: String) {
-        print("Receipt : \(receiptId)")
-    }
-    
-    
-    func serverDidSendError(client: StompClientLib!, withErrorMessage description: String, detailedErrorMessage message: String?) {
-        print("Error Send : \(String(describing: message))")
-    }
-    
-    func serverDidSendPing() {
-       
-    }
+//    func stompClient(client: StompClientLib!, didReceiveMessageWithJSONBody jsonBody: AnyObject?, withHeader header: [String : String]?, withDestination destination: String) {
+//        var json = JSON(jsonBody!)
+//        let jsonText = json["text"].stringValue
+//        let jsonSource = json["source"].stringValue
+//        let myMessages = Message()
+//        myMessages.fromId = jsonSource
+//        myMessages.text = jsonText
+//        myMessages.timestamp = 1
+//        myMessages.toId = myarray[0]
+////        Goods.Messages.append(myMessages)
+//        Goods.Messages.insert(myMessages, at: 0)
+////        DispatchQueue.main.async(execute: {
+////            self.scrollToBottom()
+////        })
+//        collectionView?.reloadData()
+//    }
+
+
 //    func scrollToBottom() {
 //            if Goods.Messages.count>3{
 //            let section = (collectionView?.numberOfSections)! - 1
@@ -95,18 +71,18 @@ class MessageViewController: UICollectionViewController, UITextFieldDelegate, UI
 //            self.collectionView?.scrollToItem(at: lastItemIndex, at: .bottom, animated: true)
 //            }
 //    }
-    
+
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return Goods.Messages.count
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var height: CGFloat = 80
-        
+
         //get estimated height somehow????
         if let text = Goods.Messages[indexPath.item].text {
             height = estimateFrameForText(text).height + 20
         }
-        
+
         return CGSize(width: view.frame.width, height: height)
     }
     private func estimatedFrameForText(text: String)-> CGRect{
@@ -118,21 +94,20 @@ class MessageViewController: UICollectionViewController, UITextFieldDelegate, UI
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath) as! ChatMessageCell
         let message = Goods.Messages[indexPath.row]
         cell.textView.text = message.text
-        let defaults = UserDefaults.standard.stringArray(forKey: "userInfo") ?? [String]()
-        if message.fromId == defaults[0] {
+        if message.fromId == userMe {
             //outgoing blue
             cell.bubbleView.backgroundColor = ChatMessageCell.blueColor
             cell.textView.textColor = UIColor.white
             cell.profileImageView.isHidden = true
             cell.bubbleViewRightAnchor?.isActive = true
             cell.bubbleViewLeftAnchor?.isActive = false
-            
+
         } else {
             //incoming gray
             cell.bubbleView.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
             cell.textView.textColor = UIColor.black
             cell.profileImageView.isHidden = false
-            
+
             cell.bubbleViewRightAnchor?.isActive = false
             cell.bubbleViewLeftAnchor?.isActive = true
         }
@@ -147,68 +122,64 @@ class MessageViewController: UICollectionViewController, UITextFieldDelegate, UI
         super.viewWillAppear(animated)
         Goods.Messages.removeAll()
     }
-    
+
     fileprivate func estimateFrameForText(_ text: String) -> CGRect {
         let size = CGSize(width: 200, height: 1000)
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
         return NSString(string: text).boundingRect(with: size, options: options, attributes: convertToOptionalNSAttributedStringKeyDictionary([convertFromNSAttributedStringKey(NSAttributedString.Key.font): UIFont.systemFont(ofSize: 16)]), context: nil)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         let backButton = UIBarButtonItem()
+        
+        
         backButton.title = "Назад"
 //        UINavigationBar.topItem.title = "\(numberClient.firstname)"
-        self.title = numberClient.firstname
-
-        self.navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
-        ConnectToSocket()
+        if let user = Auth.auth().currentUser{
+            userMe = "\(user)"
+            self.title = "\(user)"
+        }else{
+            self.title = "NoName"
+            userMe = "NoName"
+        }
         
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        self.navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
         collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 58, right: 0)
         collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         collectionView?.backgroundColor = UIColor.white
-        
+
         collectionView?.alwaysBounceVertical = true
         collectionView?.register(ChatMessageCell.self, forCellWithReuseIdentifier: "cellId")
         self.tabBarController?.tabBar.isHidden = true
         senButton.addTarget(self, action: #selector(handleSend), for: .touchUpInside)
-        
+
         setupView()
         setupConstraints()
         collectionView!.transform = CGAffineTransform.init(rotationAngle: (-(CGFloat)(Double.pi)))
 
         // Do any additional setup after loading the view.
-        
+
 //        DispatchQueue.main.async(execute: {
 //            self.scrollToBottom()
 //        })
     }
-    override func viewDidDisappear(_ animated: Bool) {
-        print(socketClient.isConnected())
-        socketClient.unsubscribe(destination: "/topic/\(myarray[0])")
-    }
-    func ConnectToSocket() {
-        let url = NSURL(string: "http://azioskz.dyndns.org:9090/messaging/ws-bazaar-messaging")!
-        socketClient.openSocketWithURLRequest(request: NSURLRequest(url: url as URL) , delegate: self)
-    }
-    
+
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         handleSend()
         return true
     }
     @objc func handleSend(){
         //        messages.append(inputTextField.text!)
-        
+
         if !(inputTextField.text?.trimmingCharacters(in: .whitespaces).isEmpty)! {
-            let dictionarty = [
-                "text" : "\(inputTextField.text!)",
-                "source" : "\(myarray)"
-            ]
-            socketClient.sendJSONForDict(dict: dictionarty as AnyObject, toDestination: "/chat/message/\(numberClient.phone!)")
-            
+
+
             let myMessages = Message()
-            let defaults = UserDefaults.standard.stringArray(forKey: "userInfo") ?? [String]()
-            myMessages.set(fromId: defaults[0], text: inputTextField.text!, timestamp: 1, toId: "\(numberClient.phone!)")
+            myMessages.set(fromId: userMe, text: inputTextField.text!, timestamp: 1, toId: "me")
 //            Goods.Messages.append(myMessages)
             Goods.Messages.insert(myMessages, at: 0)
 //            DispatchQueue.main.async(execute: {
@@ -217,7 +188,7 @@ class MessageViewController: UICollectionViewController, UITextFieldDelegate, UI
             collectionView?.reloadData()
             inputTextField.text = nil
         }
-        
+
     }
     func setupView(){
         [messageView].forEach{
@@ -227,8 +198,8 @@ class MessageViewController: UICollectionViewController, UITextFieldDelegate, UI
             messageView.addSubview($0)
         }
     }
-    
-    
+
+
     func setupConstraints(){
         messageView.easy.layout(
             Left(0),
@@ -248,7 +219,7 @@ class MessageViewController: UICollectionViewController, UITextFieldDelegate, UI
             Right().to(senButton),
             Height().like(messageView)
         )
-        
+
         seperatorLine.easy.layout(
             Left(),
             Top(),

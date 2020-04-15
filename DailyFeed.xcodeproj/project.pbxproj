@@ -48,6 +48,10 @@
 		208FBB5B1EDB1C36009C2539 /* DailySourceItemiPadLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208FBB5A1EDB1C36009C2539 /* DailySourceItemiPadLayout.swift */; };
 		20EA15751EA28C6700047523 /* Reach.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EA15741EA28C6700047523 /* Reach.swift */; };
 		54120FC423785D210075212D /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54120FC323785D210075212D /* MessageViewController.swift */; };
+		5424202D237939C900FC1194 /* globalUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5424202C237939C900FC1194 /* globalUtilities.swift */; };
+		5424202F23793A0200FC1194 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5424202E23793A0200FC1194 /* Message.swift */; };
+		5424203123793B6700FC1194 /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5424203023793B6700FC1194 /* ChatMessageCell.swift */; };
+		546A7D6923794FBC00738E60 /* FroumTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546A7D6823794FBC00738E60 /* FroumTableViewController.swift */; };
 		54C7005423701B1400248158 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 54C7005323701B1400248158 /* GoogleService-Info.plist */; };
 		54C7005623702E5500248158 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C7005523702E5500248158 /* LoginViewController.swift */; };
 		54C7005823702FCA00248158 /* FirebaseAuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C7005723702FCA00248158 /* FirebaseAuthManager.swift */; };
@@ -138,6 +142,10 @@
 		20EA15741EA28C6700047523 /* Reach.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reach.swift; sourceTree = "<group>"; };
 		3F4B271DBAED1076F1C63A67 /* Pods-DailyFeedTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DailyFeedTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DailyFeedTests/Pods-DailyFeedTests.debug.xcconfig"; sourceTree = "<group>"; };
 		54120FC323785D210075212D /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
+		5424202C237939C900FC1194 /* globalUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = globalUtilities.swift; sourceTree = "<group>"; };
+		5424202E23793A0200FC1194 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		5424203023793B6700FC1194 /* ChatMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
+		546A7D6823794FBC00738E60 /* FroumTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FroumTableViewController.swift; sourceTree = "<group>"; };
 		54C7005323701B1400248158 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		54C7005523702E5500248158 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		54C7005723702FCA00248158 /* FirebaseAuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuthManager.swift; sourceTree = "<group>"; };
@@ -195,6 +203,9 @@
 		06D04C121E1248DA0013B4AA = {
 			isa = PBXGroup;
 			children = (
+				5424203023793B6700FC1194 /* ChatMessageCell.swift */,
+				5424202E23793A0200FC1194 /* Message.swift */,
+				5424202C237939C900FC1194 /* globalUtilities.swift */,
 				54120FC323785D210075212D /* MessageViewController.swift */,
 				54C7005723702FCA00248158 /* FirebaseAuthManager.swift */,
 				54C7005323701B1400248158 /* GoogleService-Info.plist */,
@@ -277,6 +288,7 @@
 			isa = PBXGroup;
 			children = (
 				06D04C221E1248DB0013B4AA /* Main.storyboard */,
+				546A7D6823794FBC00738E60 /* FroumTableViewController.swift */,
 				06D04C271E1248DB0013B4AA /* LaunchScreen.storyboard */,
 				060D64871E31EB400053F2AB /* DailySourceItemLayout.swift */,
 				2038F9751F49AA3C0097503D /* NewsDetailPopAnimator.swift */,
@@ -426,7 +438,7 @@
 				TargetAttributes = {
 					06D04C1A1E1248DA0013B4AA = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = V27J72UF39;
+						DevelopmentTeam = F82QYRE4N3;
 						LastSwiftMigration = 1020;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -527,7 +539,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$SRCROOT/R.generated.swift",
+				$SRCROOT/R.generated.swift,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -639,6 +651,7 @@
 				06CAC5981E28A3D600EF72BB /* NewsAPI.swift in Sources */,
 				06D04C511E126BD40013B4AA /* UIImageExtension.swift in Sources */,
 				060D64881E31EB400053F2AB /* DailySourceItemLayout.swift in Sources */,
+				546A7D6923794FBC00738E60 /* FroumTableViewController.swift in Sources */,
 				54C7005823702FCA00248158 /* FirebaseAuthManager.swift in Sources */,
 				208FBB5B1EDB1C36009C2539 /* DailySourceItemiPadLayout.swift in Sources */,
 				54C7005623702E5500248158 /* LoginViewController.swift in Sources */,
@@ -647,10 +660,13 @@
 				20EA15751EA28C6700047523 /* Reach.swift in Sources */,
 				06C38FD01E35E43C004429DD /* Date+Relative.swift in Sources */,
 				2038F9761F49AA3C0097503D /* NewsDetailPopAnimator.swift in Sources */,
+				5424202F23793A0200FC1194 /* Message.swift in Sources */,
 				064FA8F31E52D48900693D12 /* BookmarkItemsCell.swift in Sources */,
 				2085CBC41EF9216900D26594 /* JSONDecodingError.swift in Sources */,
 				062169591E260AE800ECB0AB /* DailySourceItemCell.swift in Sources */,
 				06529E7D1E408DC6003DA45B /* NewsDetailViewController+StateRestoration.swift in Sources */,
+				5424202D237939C900FC1194 /* globalUtilities.swift in Sources */,
+				5424203123793B6700FC1194 /* ChatMessageCell.swift in Sources */,
 				068496AC1E23AA2900DBD5A6 /* UIViewControllerExtension.swift in Sources */,
 				06D04C1F1E1248DB0013B4AA /* AppDelegate.swift in Sources */,
 			);
@@ -817,11 +833,11 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = V27J72UF39;
+				DEVELOPMENT_TEAM = F82QYRE4N3;
 				INFOPLIST_FILE = DailyFeed/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.kz.NewsApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kz.telecom;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -834,11 +850,11 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = V27J72UF39;
+				DEVELOPMENT_TEAM = F82QYRE4N3;
 				INFOPLIST_FILE = DailyFeed/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.kz.NewsApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kz.telecom;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
